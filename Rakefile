@@ -10,7 +10,7 @@ begin
     s.description = "Build your integrityapp projects from the command line (or cron)"
     s.authors = ["Ben Koski"]
     
-    s.files = FileList["{bin}**/*", "README.rdoc", "LICENSE"]
+    s.files = FileList["{bin}**/*", "lib", "README.rdoc", "LICENSE"]
     
     s.bindir = 'bin'
     s.executables << 'integrity-watcher'
@@ -25,25 +25,24 @@ Rake::RDocTask.new do |rdoc|
   rdoc.title = 'integrity-watcher'
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib' << 'test'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = false
-end
+# require 'rake/testtask'
+# Rake::TestTask.new(:test) do |t|
+#   t.libs << 'lib' << 'test'
+#   t.pattern = 'test/**/*_test.rb'
+#   t.verbose = false
+# end
 
-begin
-  require 'rcov/rcovtask'
-  Rcov::RcovTask.new do |t|
-    t.libs << 'test'
-    t.test_files = FileList['test/**/*_test.rb']
-    t.verbose = true
-  end
-rescue LoadError
-  puts "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
-end
+# begin
+#   require 'rcov/rcovtask'
+#   Rcov::RcovTask.new do |t|
+#     t.libs << 'test'
+#     t.test_files = FileList['test/**/*_test.rb']
+#     t.verbose = true
+#   end
+# rescue LoadError
+#   puts "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
+# end
 
 task :default => :test

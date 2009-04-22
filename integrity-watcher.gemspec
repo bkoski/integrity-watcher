@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.description = %q{Build your integrityapp projects from the command line (or cron)}
   s.email = %q{gems@benkoski.com}
   s.executables = ["integrity-watcher"]
-  s.files = ["bin/integrity-watcher", "README.rdoc", "LICENSE"]
+  s.files = ["bin/integrity-watcher", "lib", "README.rdoc", "LICENSE"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/bkoski/integrity-watcher}
   s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
