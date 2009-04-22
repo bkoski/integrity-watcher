@@ -1,7 +1,35 @@
-integrity-watcher=================
-Description goes here.
+= integrity-watcher
 
-COPYRIGHT
-=========
+integrity-watcher makes it easy to build your integrityapp projects from the command line
+(or a cron).
 
-Copyright (c) 2008 Ben Koski. See LICENSE for details.
+This is just a gemified generalization of iamruinous' integrity-subversion-watcher[http://github.com/iamruinous/integrity-subversion-watcher/tree/master].
+
+== INSTALLATION
+
+  sudo gem install bkoski-integrity-watcher
+  
+<tt>integrity-watcher</tt> should now be in your path.
+
+== USAGE
+
+  integrity-watcher check PROJECTS --config=/path/to/integrity/config.yml OPTIONS
+
+<tt>PROJECTS</tt> can be either:
+
+* a comma-delimited list of project names (<tt>"Project1,Project2"</tt>)
+* "<tt>all</tt>", which will check all projects in integrity
+  
+==== Options:
+
+  --temp_dir=/some/dir
+
+A lockfile is written into the temp_dir to prevent multiple watchers from running simultaneously.
+
+  --dependency_loader=/path/to/dependency_loader.rb
+  
+The <tt>dependency_loader</tt> option should point to a file with the <tt>require</tt>s needed to
+bootstrap integrity.  For example, it might contain:
+
+  require "integrity/notifier/email"
+  Integrity::Notifier.register(Integrity::Notifier::Email)

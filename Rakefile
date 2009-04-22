@@ -4,11 +4,16 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = "integrity-watcher"
-    s.summary = %Q{TODO}
-    s.email = "bkoski@nytimes.com"
+    s.summary = %Q{Build your integrityapp projects from the command line (or cron)}
+    s.email = "gems@benkoski.com"
     s.homepage = "http://github.com/bkoski/integrity-watcher"
-    s.description = "TODO"
+    s.description = "Build your integrityapp projects from the command line (or cron)"
     s.authors = ["Ben Koski"]
+    
+    s.files = FileList["{bin}**/*", "README", "LICENSE"]
+    
+    s.bindir = 'bin'
+    s.executables << 'integrity-watcher'
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"

@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+require "rubygems"
+require "thor"
+
+class IntegrityWatcher < Thor
+  include FileUtils
+  
+  map "--temp_dir" => :temp_dir
+  
+  map "--config" => :config
+  
+  map "--dependency_loader" => :dependency_loader
+
+  desc "check",
+       "Checks the latest revision of all integrity projects."
+  method_options(:config => :required,
+                 :temp_dir => :optional,
+                 :dependency_loader => :optional)
+  def check(projects)
+    temp_dir = options[:temp_dir] ? File.expand_path(options[:temp_dir]) : '/tmp'
+    touchfile = File.join(temp_dir, "integrity-subversion-watcher")
+    raise 'Watcher is already running' if File.exist?(touchfile)
+    
+    FileUtils.touch(touchfile)
+
+    begin
+      require 'integrity'
+      Integrity.new(File.expand_path(options[:config]))
+      
+      require File.expand_path(options[:dependency_loader]).chomp('.rb') if options[:dependency_loader]
+      
+      conditions = {}
+      conditions[:name] = projects.split(',') unless projects == 'all'
+      
+      Integrity::Project.all(conditions).each do |project|
+        begin
+          puts "About to build #{project.name}..."
+          project_builder = Integrity::ProjectBuilder.new(project)
+
+          current_revision = project_builder.scm.head
+          latest_build_revision = project.last_commit.identifier.strip
+          if latest_build_revision != current_revision
+            project.build(current_revision)
+          end
+          puts "Build complete."
+        rescue Exception => e
+          STDERR.puts "Exception while building #{project.name}: #{e.class.to_s} #{e.message} \n #{e.backtrace.join("\n")}"
+        end
+      end
+    ensure
+      File.delete(touchfile)
+    end
+  end
+  
+  def config(path)
+    @config = File.expand_path(path)
+  end
+end
+
+IntegrityWatcher.start
