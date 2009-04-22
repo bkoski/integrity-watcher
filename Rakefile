@@ -10,7 +10,7 @@ begin
     s.description = "Build your integrityapp projects from the command line (or cron)"
     s.authors = ["Ben Koski"]
     
-    s.files = FileList["{bin}**/*", "README", "LICENSE"]
+    s.files = FileList["{bin}**/*", "README.rdoc", "LICENSE"]
     
     s.bindir = 'bin'
     s.executables << 'integrity-watcher'
